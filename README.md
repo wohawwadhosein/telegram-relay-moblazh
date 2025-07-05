@@ -49,4 +49,4 @@ Use Vercel’s environment variable feature to keep them secret.
 
 ---
 
-Made for [moblazh.ir](https://moblazh.ir) 🚀
+Built by [Mohammad Ebrahimzadeh](https://github.com/wohawwadhosein) for [moblazh.ir](https://moblazh.ir) 🚀
