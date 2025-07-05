@@ -1,8 +1,9 @@
 export default async function handler(req, res) {
   const token = process.env.BOT_TOKEN;
-  const validApiKey = process.env.API_KEY; // ✅ تعریف کلید امنیتی از env
-  const chat_id = "@moblazh"; // کانال یا آی‌دی عددی
+  const validApiKey = process.env.API_KEY;
+  const allowedIp = process.env.ALLOWED_IP;
 
+  const chat_id = "@moblazh";
   const { text = "No message", key } = req.query;
 
   // ✅ بررسی وجود توکن تلگرام
@@ -15,6 +16,15 @@ export default async function handler(req, res) {
     return res.status(403).send("❌ Forbidden: Invalid API key");
   }
 
+  // ✅ بررسی IP مجاز
+  const forwarded = req.headers["x-forwarded-for"];
+  const requesterIp = forwarded ? forwarded.split(",")[0].trim() : req.socket.remoteAddress;
+
+  if (requesterIp !== allowedIp) {
+    return res.status(403).send(`❌ Forbidden: Unauthorized IP (${requesterIp})`);
+  }
+
+  // ✅ ساخت پیام
   const url = `https://api.telegram.org/bot${token}/sendMessage`;
 
   const response = await fetch(url, {
